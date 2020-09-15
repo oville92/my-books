@@ -27,9 +27,24 @@ export class AuthorizationService {
 		});
 	}
 	
-	signIn(email, password) { }
+	signIn(email, password) {
+		return Observable.create(observer => {
+			
+			if (email != "test" || password != "test") {
+				console.log("signIn error");
+				observer.error("Bad Credential");
+			} else {
+				this.cognitoUser = {"name" : "test"};
+				console.log("signIn success", this.cognitoUser);
+				observer.next(this.cognitoUser);
+				observer.complete();
+			}
+		});		
+	}
 	
-	isLoggedIn() { }
+	isLoggedIn() {
+		return this.cognitoUser != null;
+	}
 	
 	confirmAuthCode(code) { 
 		return Observable.create(observer => {
@@ -45,7 +60,11 @@ export class AuthorizationService {
 		});
 	}
 	
-	getAuthenticateUser() { }
+	getAuthenticateUser() {
+		return {"name" : "test", "prenom" : "test"};
+	}
 	
-	logout() { }
+	logout() { 
+		this.cognitoUser = null;
+	}
 }
