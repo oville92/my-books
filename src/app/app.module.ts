@@ -14,6 +14,7 @@ import { RestapiComponent } from './restapi/restapi.component';
 import { ApiService } from './api/api.service';
 import { AuthorizationService } from './service/authorization.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 	FormsModule,
 	HttpClientModule
   ],
-  providers: [ApiService, AuthorizationService],
+  providers: [ApiService, AuthorizationService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
