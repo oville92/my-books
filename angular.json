@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "my-books"
+    }
+  },
+  "defaultProject": "my-books",
+  "cli": {
+    "analytics": false
+  }
 }
