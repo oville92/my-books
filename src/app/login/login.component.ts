@@ -21,11 +21,15 @@ export class LoginComponent implements OnInit {
 		const email = form.value.email;
 		const password = form.value.password;
 		
+		console.log("IN onSubmit");
+		
 		this.auth.signIn(email, password).subscribe(
 			(data) => {
+				console.log("onSubmit ok");
 				this._router.navigateByUrl('/');
 			},
 			(err) => {
+				console.log("onSubmit nok");
 				this.emailVerificationMessage = true;
 			}
 		);
