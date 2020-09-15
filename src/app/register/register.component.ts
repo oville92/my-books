@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
 		const email = form.value.email;
 		const password = form.value.password;
 		
-		this.auth.register(email, password).suscribe(
+		this.auth.register(email, password).subscribe(
 			(data) => {
 				this.confirmCode = true;
 			}, 
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
 	validateAuthCode(form: NgForm) {
 		const code = form.value.code;
 		
-		this.auth.confirmAuthCode(code).suscribe(
+		this.auth.confirmAuthCode(code).subscribe(
 			(data) => {
 				this.codeWasConfirmed = true;
 				this.confirmCode = false;

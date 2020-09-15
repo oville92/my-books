@@ -20,7 +20,7 @@
     <div *ngIf="confirmCode" class="row message-row">
       <h3>Please check your email for the validation code and enter it here:</h3>
       <div class="col-lg-4">
-        <form (ngsubmit)="validateAuthCode(codeform)" #codeform="ngForm">
+        <form (ngSubmit)="validateAuthCode(codeform)" #codeform="ngForm">
           <div class="form-group">
             <label for="code">Code</label>
             <input type="text" name="code" id="code" ngModel="" class="form-control" required="">
@@ -29,7 +29,7 @@
         </form>
       </div>
     </div>
-    <div *ngif="codeWasConfirmed" class="row message-row">
+    <div *ngIf="codeWasConfirmed" class="row message-row">
       <h3>Verification Code was confirmed, please click <a routerlink="/login">here</a> to login</h3>
     </div>
   </div>

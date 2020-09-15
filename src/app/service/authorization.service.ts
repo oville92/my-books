@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+
+const poolData = {
+	UserPoolId: 'eu-central-1_mCA0sEn1T',
+	ClientId: '6fhibavrfqodj9hff04ph8t8b6'
+};
+
+const userPool = new CognitoUserPool(poolData);
 
 @Injectable({
   providedIn: 'root'
@@ -14,57 +22,80 @@ export class AuthorizationService {
 		const attributeList = [];
 		
 		return Observable.create(observer => {
-			
-			if (email != "test" || password != "test") {
-				console.log("signUp error");
-				observer.error("Bad Credential");
-			} else {
-				this.cognitoUser = {"name" : "test"};
-				console.log("signUp success", this.cognitoUser);
-				observer.next(this.cognitoUser);
+			userPool.signUp(email, password, attributeList, null, (err, result) => {
+				if (err) {
+					console.log(JSON.stringify(err));
+					observer.error(err);
+				}
+				
+				this.cognitoUser = result.user;
+				console.log("signUp success", result);
+				observer.next(result);
 				observer.complete();
-			}
+			});
 		});
 	}
 	
-	signIn(email, password) {
+	signIn(email, password) { 
+		const authenticationData = {
+			Username : email,
+			Password : password
+		};
+		
+		const authenticationDetails = new AuthenticationDetails(authenticationData);
+		
+		const userData = {
+			Username : email,
+			Pool : userPool
+		};
+		
+		const cognitoUser = new CognitoUser(userData);
+		
 		return Observable.create(observer => {
 			
-			if (email != "test" || password != "test") {
-				console.log("signIn error");
-				observer.error("Bad Credential");
-			} else {
-				this.cognitoUser = {"name" : "test"};
-				console.log("signIn success", this.cognitoUser);
-				observer.next(this.cognitoUser);
-				observer.complete();
-			}
-		});		
+			cognitoUser.authenticateUser(authenticationDetails, {
+				onSuccess: function(result) {
+					observer.next(result);
+					observer.complete();
+				},
+				onFailure: function(err) {
+					console.log(err);
+					observer.error(err);
+				}
+			});
+		});	
 	}
 	
 	isLoggedIn() {
-		return this.cognitoUser != null;
+		return userPool.getCurrentUser() != null;
 	}
 	
 	confirmAuthCode(code) { 
+		const user = {
+			Username : this.cognitoUser.username,
+			Pool : userPool
+		};
 		return Observable.create(observer => {
-			
-			if (code != "test") {
-				console.log("bad code");
-				observer.error("Bad validation code");
-			} else {
-				console.log("confirmAuthCode() success");
-				observer.next("Cconfirmation code ok");
+			const cognitoUser = new CognitoUser(user);
+			cognitoUser.confirmRegistration(code, true, function(err, result) {
+				if (err) {
+					console.log(err);
+					observer.error(err);
+				}
+
+				console.log("confirmAuthCode() success", result);
+				observer.next(result);
 				observer.complete();
-			}
+			});
 		});
 	}
 	
-	getAuthenticateUser() {
-		return {"name" : "test", "prenom" : "test"};
+	getAuthenticatedUser() {
+		return userPool.getCurrentUser();
 	}
 	
-	logout() { 
+	logout() {
+		this.getAuthenticatedUser().signOut();
 		this.cognitoUser = null;
 	}
 }
