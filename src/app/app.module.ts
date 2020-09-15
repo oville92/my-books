@@ -12,7 +12,8 @@ import { RegisterComponent } from './register/register.component';
 import { RestapiComponent } from './restapi/restapi.component';
 
 import { ApiService } from './api/api.service';
-import { AuthorizationService } from './service/authorization.service'
+import { AuthorizationService } from './service/authorization.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthorizationService } from './service/authorization.service'
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    RestapiComponent
+    RestapiComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
