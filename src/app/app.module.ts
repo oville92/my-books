@@ -12,6 +12,7 @@ import { RegisterComponent } from './register/register.component';
 import { RestapiComponent } from './restapi/restapi.component';
 
 import { ApiService } from './api/api.service';
+import { AuthorizationService } from './service/authorization.service'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { ApiService } from './api/api.service';
 	FormsModule,
 	HttpClientModule
   ],
-  providers: [ApiService],
+  providers: [ApiService, AuthorizationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
